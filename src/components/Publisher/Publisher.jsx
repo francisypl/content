@@ -12,7 +12,7 @@ MyContract.setProvider(provider);
 
 // set default data for the contract
 MyContract.defaults({
-    from: '0xca122960eccd0bcd6ce485fcea90149eba423940',
+    from: '0xbec877997d295938eab641276dec3dcbbac43e38',
     gas: 4712388,
     gasPrice: 1000000000,
 });
@@ -27,22 +27,17 @@ class Publisher extends Component {
     }
 
     async deployContract() {
-        let contractInstance = await MyContract.new();
-        console.log(contractInstance);
-        let key = await contractInstance.getKey();
+        try {
+        let contractInstance = await MyContract.new(["adsadsa", "aasdsad"]);
+        await contractInstance.payForKey({value: 12});
+        let key = await contractInstance.getPrice();
 
         console.log(`PRIVATE KEY BE THIS SHIT ${key}`);
-        this.setState({ key })
-    }
-
-    deployContract() {
-        let contractInstance;
-        MyContract.new()
-            .then(instance => {
-                contractInstance = instance;
-                return contractInstance.getKey();
-            })
-            .catch(error => console.log(error))
+        // this.setState({ key })
+        }
+        catch (error) {
+    console.log(error);
+}
     }
 
     render() {

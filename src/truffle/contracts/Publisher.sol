@@ -16,15 +16,15 @@ contract Publisher {
     mapping(address => bool) paid;
     mapping(address => uint256) promoterPayments; 
 
-    function Publisher(string _privateKey, uint256 _price) payable {
+    function Publisher(string _privateKey, uint256 _price) {
         owner = msg.sender;
         privateKey = _privateKey;
         price = _price * 1000000000000000000;
     }
     
-    function () payable {
-        fallBackCalled();
-    }
+    // function () payable {
+    //     fallBackCalled();
+    // }
     
     function fallBackCalled() constant returns (string) {
         return "fallback was called";
@@ -54,6 +54,10 @@ contract Publisher {
         );
         
         return privateKey;
+    }
+
+    function getPrice() constant returns (uint256) {
+        return price;
     }
 
     function getContractAddress() constant returns (address) {
