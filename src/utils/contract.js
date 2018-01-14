@@ -10,14 +10,14 @@ MyContract.setProvider(provider);
 
 // set default data for the contract
 MyContract.defaults({
-  from: '0x3ca9efe38a216cab7852110311d1829609474dd4',
+  from: '0xbec877997d295938eab641276dec3dcbbac43e38',
   gas: 4712388,
   gasPrice: 1000000000,
 });
 
 async function deployContract(key, price) {
   const contractInstance = await MyContract.new();
-  await contractInstance.setData(key, price);
+  await contractInstance.setPublisherData(key, price);
   return contractInstance.address;
 }
 
