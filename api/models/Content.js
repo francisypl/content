@@ -1,7 +1,7 @@
 
 module.exports = function(sequelize, DataTypes) {
   return sequelize.define('Content', {
-    content_address: {
+    contract_address: {
       type: DataTypes.STRING,
       defaultValue: ''
     },

@@ -5,7 +5,7 @@ var db = require('../models/db');
 /* POST content */
 router.post('/', function(req, res, next) {
   const content = {
-    'content_address': req.body.content_address,
+    'contract_address': req.body.contract_address,
     'price': req.body.price_in_wei,
     'url': req.body.file_url
   };
@@ -43,7 +43,7 @@ router.get('/:content_id', function(req, res, next) {
 // TODO temporary mock to test heroku connectivity
   if (req.query.mock != null && req.query.mock === 'true') {
     res.send({
-        "content_address": "1234",
+        "contract_address": "1234",
         "price_in_wei": 10,
         "file_url": "http://i0.kym-cdn.com/entries/icons/mobile/000/025/067/ugandanknuck.jpg"
       });
@@ -53,7 +53,7 @@ router.get('/:content_id', function(req, res, next) {
       .then(content => {
         console.log('Got content successfully. content: ' + JSON.stringify(content));
         res.send({
-            'content_address': content.content_address,
+            'contract_address': content.contract_address,
             'price_in_wei': content.price,
             'file_url': content.url
           });
