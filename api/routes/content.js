@@ -1,20 +1,30 @@
 var express = require('express');
 var router = express.Router();
+var db = require('../models/db');
 
 /* POST content */
 router.post('/', function(req, res, next) {
   const content = {
-    'content_address': req.content_address,
-    'price_in_wei': req.price_in_wei,
-    'file_url': req.file_url
+    'content_address': req.body.content_address,
+    'price': req.body.price_in_wei,
+    'url': req.body.file_url
   };
 
-  const content_id = 1;
+  console.log('content: ' + JSON.stringify(content));
 
-  console.log('content: ' + content);
-  res.send({
-    'id': content_id
-  });
+  db.Content.create(content)
+    .then(entry => {
+      console.log('Saved created entry successfully. entry: ' + JSON.stringify(entry));
+      res.send({
+        'id': entry.id
+      });
+    })
+    .catch(error => {
+      console.error('Error saving entry. Error=' + error);
+      res.status(500).send({
+        'error': error
+      })
+    });
 });
 
 /* GET content */
