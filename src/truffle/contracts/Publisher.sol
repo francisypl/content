@@ -9,17 +9,13 @@ contract Publisher {
     address owner;
     string public privateKey;
     uint256 public price;
-    
-    address[] promoters;
+        
     address[] paidConsumers;
 
     mapping(address => bool) paid;
-    mapping(address => uint256) promoterPayments; 
 
-    function Publisher(string _privateKey, uint256 _price) payable {
+    function Publisher() payable {
         owner = msg.sender;
-        privateKey = _privateKey;
-        price = _price * 1000000000000000000;
     }
     
     function () payable {
@@ -30,7 +26,6 @@ contract Publisher {
         return "fallback was called";
     }
 
-    // Consumers
     // payment will pay and push to address=>boolean mapping
     function payForKey() payable returns (string) {
         require(
@@ -48,6 +43,7 @@ contract Publisher {
         }
     }
    
+    // for consumers
     function getKey() constant returns (string) {
         require(
             paid[msg.sender] == true
@@ -56,15 +52,26 @@ contract Publisher {
         return privateKey;
     }
 
+    function setData(string _privateKey, uint256 _price) {
+        require(msg.sender == owner);
+        privateKey = _privateKey;
+        price = _price * 1000000000000000000;
+    }
+
+    function getPaidConsumers() constant returns (address[]) {
+        return paidConsumers;
+    }
+
+    function getOwner() constant returns (address) {
+        return owner;
+    }
+
     function getContractAddress() constant returns (address) {
         return this;
     }
     
-    function returnOne() constant returns (uint256) {
-        return 1;
-    }
-
     function cashOut() {
         owner.transfer(this.balance);
     }
+     
 }
