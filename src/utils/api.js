@@ -1,11 +1,32 @@
 import request from 'superagent';
 
-export default function getDataWithId(id) {
+function getDataWithId(id) {
   return new Promise((resolve) => {
-    return resolve({
-      contractAddres: '0x123',
-      url: 'http://www.google.com',
-      price: 100,
-    });
+    return request.get('https://content-wcef.herokuapp.com/content/' + id)
+      .accept('json')
+      .then((res) => {
+        return resolve ({
+          contractAddress: res.body.contract_address,
+          url: res.body.file_url,
+          price: res.body.price_in_wei
+        });
+      })
+      .catch(function(err){
+        console.log("error caught: " + err);
+      });
   });
 }
+
+function postData(body) {
+  return new Promise((resolve) => {
+    return request.post('https://content-wcef.herokuapp.com/content')
+      .send(body)
+      .accept('json')
+      .then(res => {
+        return resolve(res.body);
+      })
+      .catch(err => console.log(err));
+  });
+}
+
+export default { getDataWithId, postData };

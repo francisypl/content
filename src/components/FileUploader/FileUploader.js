@@ -3,6 +3,7 @@ import withStyles from 'isomorphic-style-loader/lib/withStyles';
 import s from './FileUploader.scss';
 import encryptFile from '../../utils/encryptfile';
 import { deployContract } from '../../utils/contract';
+import api from '../../utils/api';
 
 const TEXT_STATES = {
   default: 'Drag a file here to begin',
@@ -73,19 +74,13 @@ class FileUploader extends React.Component {
       download: `data:application/octet-stream,${encryptedFile}`,
     });
 
-    upload.post('https://content-wcef.herokuapp.com/content')
-      .send({
+
+    api.postData({
         'contract_address': contractAddr,
         'file_url': url,
         'price_in_wei': price_in_wei
       })
-      .accept('json')
-      .then(res => {
-        // make promotor endpoint
-        // http://localhost:3001/contract/contractAddr/promotor/promotorId
-        // <Link to=`http://localhost:3001/${contract_address}/${}`
-      })
-      .catch(err => console.log(err));
+      .then(res => console.log('posted data success. ' + JSON.stringify(res)));
   }
 
   dragLeave = (e) => {
