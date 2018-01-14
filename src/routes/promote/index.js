@@ -11,7 +11,7 @@ import React from 'react';
 import Promote from './Promote';
 import PromoteLink from './PromoteLink';
 
-export const path = '/promote/:id';
+export const path = '/view/:id';
 export const action = async (state) => {
   const title = 'Enter Wallet Address';
   state.context.onSetTitle(title);
