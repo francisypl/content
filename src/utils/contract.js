@@ -10,7 +10,7 @@ MyContract.setProvider(provider);
 
 // set default data for the contract
 MyContract.defaults({
-  from: '0xbec877997d295938eab641276dec3dcbbac43e38',
+  from: '0xa835deee2faa4ec77b360375aad305c2e56ff4d8',
   gas: 4712388,
   gasPrice: 1000000000,
 });

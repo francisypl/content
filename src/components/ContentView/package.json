@@ -1,0 +1,6 @@
+{
+  "name": "ContentView",
+  "version": "0.0.0",
+  "private": true,
+  "main": "./ContentView.js"
+}
