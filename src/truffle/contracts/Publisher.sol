@@ -13,6 +13,9 @@ contract Publisher {
     address[] paidConsumers;
 
     mapping(address => bool) paid;
+    mapping(address => uint256) promoterPayments;
+    mapping(address => string) promoterToURL;
+    uint256 publisherPayment;
 
     function Publisher() payable {
         owner = msg.sender;
@@ -26,7 +29,7 @@ contract Publisher {
         return "fallback was called";
     }
 
-    // payment will pay and push to address=>boolean mapping
+    // Consumer
     function payForKey() payable returns (string) {
         require(
             msg.value >= price
@@ -43,8 +46,7 @@ contract Publisher {
         }
     }
    
-    // for consumers
-    function getKey() constant returns (string) {
+    function getConsumerKey() constant returns (string) {
         require(
             paid[msg.sender] == true
         );
@@ -52,7 +54,7 @@ contract Publisher {
         return privateKey;
     }
 
-    function setData(string _privateKey, uint256 _price) {
+    function setPublisherData(string _privateKey, uint256 _price) {
         require(msg.sender == owner);
         privateKey = _privateKey;
         price = _price * 1000000000000000000;
@@ -61,17 +63,24 @@ contract Publisher {
     function getPaidConsumers() constant returns (address[]) {
         return paidConsumers;
     }
-
-    function getOwner() constant returns (address) {
-        return owner;
-    }
-
-    function getContractAddress() constant returns (address) {
-        return this;
-    }
     
-    function cashOut() {
-        owner.transfer(this.balance);
+    function publisherCashOut() {
+        owner.transfer(publisherPayment);
     }
-     
+
+    // Promoter
+    function setPromoterData(string _promoterURL) {
+        promoterToURL[msg.sender] = _promoterURL;
+    }
+
+    function getPromoterURL() constant returns (string) {
+        return promoterToURL[msg.sender];
+    }
+ 
+    function promoterCashOut() payable returns (uint256) {
+        require (
+            promoterPayments[msg.sender] > 0
+        );
+        msg.sender.transfer(promoterPayments[msg.sender]);    
+    }
 }
