@@ -1,6 +1,10 @@
-import React, { Component } from 'react';
+import React, { Component, PropTypes } from 'react';
 
 class PromoteLink extends Component {
+  static propTypes = {
+    id: PropTypes.string.isRequired,
+  };
+
   constructor(props) {
     super(props);
     this.state = {
@@ -11,8 +15,7 @@ class PromoteLink extends Component {
   }
 
   onSubmit() {
-    this.setState({ url: `${window.location.href}/${this.state.walletId}` });
-    console.log(this.state.url);
+    this.setState({ url: `${window.location.hostname}/view/${this.props.id}/${this.state.walletId}` });
   }
 
   render() {

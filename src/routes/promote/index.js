@@ -11,14 +11,15 @@ import React from 'react';
 import Promote from './Promote';
 import PromoteLink from './PromoteLink';
 
-export const path = '/view/:id';
+export const path = '/promote/:id';
 export const action = async (state) => {
   const title = 'Enter Wallet Address';
+  const id = state.params.id;
   state.context.onSetTitle(title);
   return (
     <div>
       <Promote title={title} />
-      <PromoteLink />
+      <PromoteLink id={id} />
     </div>
   );
 };
