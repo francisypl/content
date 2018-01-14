@@ -2,6 +2,7 @@ import React, { Component, PropTypes } from 'react';
 import withStyles from 'isomorphic-style-loader/lib/withStyles';
 import s from './FileUploader.scss';
 import encryptFile from '../../utils/encryptfile';
+import { deployContract } from '../../utils/contract';
 
 const TEXT_STATES = {
   default: 'Drag a file here to begin',
@@ -47,10 +48,6 @@ class FileUploader extends Component {
     }
     const file = this.extractFile(ev);
     const { key, encryptedFile } = await encryptFile(file);
-<<<<<<< Updated upstream
-    console.log('key =>', key);
-    console.log('encryptedFile =>', encryptedFile);
-=======
     const contractAddr = await deployContract(this.context.contract.contract, key, 1);
     // const contractAddr = '';
     const url = this.uploadtoS3(encryptedFile);
@@ -58,7 +55,6 @@ class FileUploader extends Component {
       results: { key, url, contractAddr },
       download: `data:application/octet-stream,${encryptedFile}`,
     });
->>>>>>> Stashed changes
   }
 
   dragLeave = (e) => {
