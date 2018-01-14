@@ -15,6 +15,7 @@ class FileUploader extends Component {
     this.state = {
       text: TEXT_STATES.default,
     };
+    this.dropHandler = this.dropHandler.bind(this);
   }
 
   extractFile(ev) {
@@ -33,17 +34,22 @@ class FileUploader extends Component {
     return file;
   }
 
-  dropHandler = (ev) => {
+  async dropHandler(ev) {
     ev.preventDefault();
     const { text } = this.state;
     if (text !== TEXT_STATES.ondrop) {
       this.setState({ text: TEXT_STATES.ondrop });
     }
     const file = this.extractFile(ev);
-    const { key, encryptedFile } = encryptFile(file);
+    const { key, encryptedFile } = await encryptFile(file);
     console.log('key =>', key);
     console.log('encryptedFile =>', encryptedFile);
-  };
+  }
+
+  dragLeave = (e) => {
+    e.preventDefault();
+    this.setState({ text: TEXT_STATES.default });
+  }
 
   dragHandler = (e) => {
     e.preventDefault();
@@ -60,6 +66,7 @@ class FileUploader extends Component {
         <div
           className={ s.textbox }
           onDragOver={ this.dragHandler }
+          onDragLeave={ this.dragLeave }
           onDrop={ this.dropHandler }
         >
           <span>{ text }</span>
