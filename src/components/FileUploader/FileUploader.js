@@ -80,8 +80,13 @@ class FileUploader extends Component {
           onDrop={ this.dropHandler }
         >
           <span>{ !hasResults && text }</span>
-          <span>{ results && results.key && `Private: ${results.key}` }</span>
-          <span>{ results && results.url && `Url: ${results.url}` }</span>
+          {hasResults &&
+              <div>
+                <span>{'Private Key'}</span>
+                <div className={ s.result }>{ results && results.key && results.key} }</div>
+                <span>{'Encrypted Content Url'}</span>
+                <div className={ s.result }>{ results && results.url && results.url }</div>
+              </div>}
           { hasResults &&
             <a className={ s.downloadLink } href={ download }>
               Download Encrypted File</a> }
