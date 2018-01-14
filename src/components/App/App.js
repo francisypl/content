@@ -11,7 +11,6 @@ import React, { Component, PropTypes } from 'react';
 import emptyFunction from 'fbjs/lib/emptyFunction';
 import s from './App.scss';
 import Header from '../Header';
-import Publisher from '../Publisher/Publisher';
 
 class App extends Component {
 
@@ -57,7 +56,6 @@ class App extends Component {
       <div>
         <Header />
         {this.props.children}
-        <Publisher />
       </div>
     ) : this.props.children;
   }

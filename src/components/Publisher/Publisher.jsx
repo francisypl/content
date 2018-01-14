@@ -11,7 +11,7 @@ MyContract.setProvider(provider);
 
 // set default data for the contract
 MyContract.defaults({
-  from: '0xca122960eccd0bcd6ce485fcea90149eba423940',
+  from: '0x3ca9efe38a216cab7852110311d1829609474dd4',
   gas: 4712388,
   gasPrice: 1000000000,
 });
@@ -34,7 +34,6 @@ class Publisher extends Component {
     return (
       <div style={{ marginLeft: 20 }}>
         <button onClick={this.deployContract}>DEPLOY CONTRACT</button>
-          <div>Key: {this.state.key}</div>
             <p></p>
           </div>
     );

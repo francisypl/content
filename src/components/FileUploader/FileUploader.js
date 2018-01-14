@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import withStyles from 'isomorphic-style-loader/lib/withStyles';
 import s from './FileUploader.scss';
 import encryptFile from '../../utils/encryptfile';
+import { deployContract } from '../../utils/contract';
 
 const TEXT_STATES = {
   default: 'Drag a file here to begin',
@@ -16,6 +17,7 @@ class FileUploader extends Component {
       text: TEXT_STATES.default,
       results: { key: '', url: '' },
       download: '',
+      contractAddr: '',
     };
     this.dropHandler = this.dropHandler.bind(this);
   }
@@ -48,9 +50,11 @@ class FileUploader extends Component {
     }
     const file = this.extractFile(ev);
     const { key, encryptedFile } = await encryptFile(file);
+    const contractAddr = await deployContract(key, 1);
+    // const contractAddr = '';
     const url = this.uploadtoS3(encryptedFile);
     this.setState({
-      results: { key, url },
+      results: { key, url, contractAddr },
       download: `data:application/octet-stream,${encryptedFile}`,
     });
   }
@@ -83,9 +87,11 @@ class FileUploader extends Component {
           {hasResults &&
               <div>
                 <span>{'Private Key'}</span>
-                <div className={ s.result }>{ results && results.key && results.key} }</div>
+                <div className={ s.result }>{ results && results.key} }</div>
                 <span>{'Encrypted Content Url'}</span>
-                <div className={ s.result }>{ results && results.url && results.url }</div>
+                <div className={ s.result }>{ results && results.url }</div>
+                <span>{'Contract Address'}</span>
+                <div className={ s.result }>{ results && results.contractAddr }</div>
               </div>}
           { hasResults &&
             <a className={ s.downloadLink } href={ download }>
