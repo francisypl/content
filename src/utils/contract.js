@@ -17,7 +17,7 @@ MyContract.defaults({
 
 async function deployContract(key, price) {
   const contractInstance = await MyContract.new();
-  await contractInstance.setData(key, price);
+  await contractInstance.setPublisherData(key, price);
   return contractInstance.address;
 }
 
