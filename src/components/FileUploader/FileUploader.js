@@ -1,6 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import withStyles from 'isomorphic-style-loader/lib/withStyles';
 import s from './FileUploader.scss';
+import encryptFile from '../../utils/encryptfile';
 
 const TEXT_STATES = {
   default: 'Drag a file here to begin',
@@ -16,12 +17,32 @@ class FileUploader extends Component {
     };
   }
 
-  dropHandler = (e) => {
-    e.preventDefault();
+  extractFile(ev) {
+    const dt = ev.dataTransfer;
+    let file;
+    if (dt.items) {
+      // Use DataTransferItemList interface to access the file(s)
+      for (let i = 0; i < dt.items.length; i++) {
+        if (dt.items[i].kind === 'file') {
+          file = dt.items[i].getAsFile();
+        }
+      }
+    } else {
+      console.log('not able to find file');
+    }
+    return file;
+  }
+
+  dropHandler = (ev) => {
+    ev.preventDefault();
     const { text } = this.state;
     if (text !== TEXT_STATES.ondrop) {
       this.setState({ text: TEXT_STATES.ondrop });
     }
+    const file = this.extractFile(ev);
+    const { key, encryptedFile } = encryptFile(file);
+    console.log('key =>', key);
+    console.log('encryptedFile =>', encryptedFile);
   };
 
   dragHandler = (e) => {
