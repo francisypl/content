@@ -1860,7 +1860,9 @@ module.exports =
       };
   
       _this.state = {
-        text: TEXT_STATES.default
+        text: TEXT_STATES.default,
+        results: { key: '', url: '' },
+        download: ''
       };
       _this.dropHandler = _this.dropHandler.bind(_this);
       return _this;
@@ -1884,10 +1886,15 @@ module.exports =
         return file;
       }
     }, {
+      key: 'uploadtoS3',
+      value: function uploadtoS3() {
+        return 'https://www.google.com';
+      }
+    }, {
       key: 'dropHandler',
       value: function () {
         var _ref = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee(ev) {
-          var text, file, _ref2, key, encryptedFile;
+          var text, file, _ref2, key, encryptedFile, url;
   
           return _regenerator2.default.wrap(function _callee$(_context) {
             while (1) {
@@ -1907,9 +1914,12 @@ module.exports =
                   _ref2 = _context.sent;
                   key = _ref2.key;
                   encryptedFile = _ref2.encryptedFile;
+                  url = this.uploadtoS3(encryptedFile);
   
-                  console.log('key =>', key);
-                  console.log('encryptedFile =>', encryptedFile);
+                  this.setState({
+                    results: { key: key, url: url },
+                    download: 'data:application/octet-stream,' + encryptedFile
+                  });
   
                 case 11:
                 case 'end':
@@ -1928,8 +1938,12 @@ module.exports =
     }, {
       key: 'render',
       value: function render() {
-        var text = this.state.text;
+        var _state = this.state,
+            text = _state.text,
+            results = _state.results,
+            download = _state.download;
   
+        var hasResults = results !== '' && download !== '';
         return _react2.default.createElement(
           'div',
           { className: _FileUploader2.default.container },
@@ -1944,7 +1958,22 @@ module.exports =
             _react2.default.createElement(
               'span',
               null,
-              text
+              !hasResults && text
+            ),
+            _react2.default.createElement(
+              'span',
+              null,
+              results && results.key && 'Private: ' + results.key
+            ),
+            _react2.default.createElement(
+              'span',
+              null,
+              results && results.url && 'Url: ' + results.url
+            ),
+            hasResults && _react2.default.createElement(
+              'a',
+              { className: _FileUploader2.default.downloadLink, href: download },
+              'Download Encrypted File'
             )
           )
         );
@@ -3851,6 +3880,7 @@ module.exports =
                 fr.onload = function () {
                   var key = getNewSecretKey();
                   var encryptedFile = _cryptoJs.AES.encrypt(fr.result, key).toString();
+                  // const decryptedFile = AES.decrypt(encryptedFile, key).toString(enc.Utf8);
                   resolve({ key: key, encryptedFile: encryptedFile });
                 };
   
@@ -4728,7 +4758,7 @@ module.exports =
   
   
   // module
-  exports.push([module.id, "/*\r\n * Colors\r\n * ========================================================================== */\r\n\r\n/* #222 */\r\n\r\n/* #404040 */\r\n\r\n/* #555 */\r\n\r\n/* #777 */\r\n\r\n/* #eee */\r\n\r\n/*\r\n * Typography\r\n * ========================================================================== */\r\n\r\n/*\r\n * Layout\r\n * ========================================================================== */\r\n\r\n/*\r\n * Media queries breakpoints\r\n * ========================================================================== */\r\n\r\n/* Extra small screen / phone */\r\n\r\n/* Small screen / tablet */\r\n\r\n/* Medium screen / desktop */\r\n\r\n/* Large screen / wide desktop */\r\n\r\n/*\r\n * Animations\r\n * ========================================================================== */\r\n\r\n.FileUploader_container_8Cj {\n  display: -webkit-box;\n  display: -webkit-flex;\n  display: -ms-flexbox;\n  display: flex;\n  -webkit-box-pack: center;\n  -webkit-justify-content: center;\n      -ms-flex-pack: center;\n          justify-content: center;\n  width: 100%;\n}\r\n\r\n.FileUploader_textbox_1Qu {\n  margin-top: 100px;\n  width: 500px;\n  height: 500px;\n  text-align: center;\n  display: -webkit-box;\n  display: -webkit-flex;\n  display: -ms-flexbox;\n  display: flex;\n  -webkit-box-orient: vertical;\n  -webkit-box-direction: normal;\n  -webkit-flex-direction: column;\n      -ms-flex-direction: column;\n          flex-direction: column;\n  -webkit-box-pack: center;\n  -webkit-justify-content: center;\n      -ms-flex-pack: center;\n          justify-content: center;\n  -webkit-align-content: center;\n      -ms-flex-line-pack: center;\n          align-content: center;\n  -webkit-box-align: center;\n  -webkit-align-items: center;\n      -ms-flex-align: center;\n          align-items: center;\n  border: 4px solid black;\n  font-weight: bold;\n  font-size: 30px;\n}\n", "", {"version":3,"sources":["/./src/components/variables.scss","/./src/components/FileUploader/FileUploader.scss"],"names":[],"mappings":"AAAA;;gFAEgF;;AAGxB,UAAU;;AACV,aAAa;;AACb,UAAU;;AACV,UAAU;;AACV,UAAU;;AAElE;;gFAEgF;;AAIhF;;gFAEgF;;AAIhF;;gFAEgF;;AAEhD,gCAAgC;;AAChC,2BAA2B;;AAC3B,6BAA6B;;AAC7B,iCAAiC;;AAEjE;;gFAEgF;;AChChF;EACE,qBAAc;EAAd,sBAAc;EAAd,qBAAc;EAAd,cAAc;EACd,yBAAwB;EAAxB,gCAAwB;MAAxB,sBAAwB;UAAxB,wBAAwB;EACxB,YAAY;CACb;;AAED;EACE,kBAAkB;EAClB,aAAa;EACb,cAAc;EACd,mBAAmB;EACnB,qBAAc;EAAd,sBAAc;EAAd,qBAAc;EAAd,cAAc;EACd,6BAAuB;EAAvB,8BAAuB;EAAvB,+BAAuB;MAAvB,2BAAuB;UAAvB,uBAAuB;EACvB,yBAAwB;EAAxB,gCAAwB;MAAxB,sBAAwB;UAAxB,wBAAwB;EACxB,8BAAsB;MAAtB,2BAAsB;UAAtB,sBAAsB;EACtB,0BAAoB;EAApB,4BAAoB;MAApB,uBAAoB;UAApB,oBAAoB;EACpB,wBAAwB;EACxB,kBAAkB;EAClB,gBAAgB;CACjB","file":"FileUploader.scss","sourcesContent":["/*\r\n * Colors\r\n * ========================================================================== */\r\n\r\n$white-base:            hsl(255, 255, 255);\r\n$gray-darker:           color(black lightness(+13.5%)); /* #222 */\r\n$gray-dark:             color(black lightness(+25%));   /* #404040 */\r\n$gray:                  color(black lightness(+33.5%)); /* #555 */\r\n$gray-light:            color(black lightness(+46.7%)); /* #777 */\r\n$gray-lighter:          color(black lightness(+93.5%)); /* #eee */\r\n\r\n/*\r\n * Typography\r\n * ========================================================================== */\r\n\r\n$font-family-base:      'Segoe UI', 'HelveticaNeue-Light', sans-serif;\r\n\r\n/*\r\n * Layout\r\n * ========================================================================== */\r\n\r\n$max-content-width:     1000px;\r\n\r\n/*\r\n * Media queries breakpoints\r\n * ========================================================================== */\r\n\r\n$screen-xs-min:         480px;  /* Extra small screen / phone */\r\n$screen-sm-min:         768px;  /* Small screen / tablet */\r\n$screen-md-min:         992px;  /* Medium screen / desktop */\r\n$screen-lg-min:         1200px; /* Large screen / wide desktop */\r\n\r\n/*\r\n * Animations\r\n * ========================================================================== */\r\n\r\n$animation-swift-out:   .45s cubic-bezier(0.3, 1, 0.4, 1) 0s;\r\n","@import '../variables.scss';\n\n.container {\n  display: flex;\n  justify-content: center;\n  width: 100%;\n}\n\n.textbox {\n  margin-top: 100px;\n  width: 500px;\n  height: 500px;\n  text-align: center;\n  display: flex;\n  flex-direction: column;\n  justify-content: center;\n  align-content: center;\n  align-items: center;\n  border: 4px solid black;\n  font-weight: bold;\n  font-size: 30px;\n}\n"],"sourceRoot":"webpack://"}]);
+  exports.push([module.id, "/*\r\n * Colors\r\n * ========================================================================== */\r\n\r\n/* #222 */\r\n\r\n/* #404040 */\r\n\r\n/* #555 */\r\n\r\n/* #777 */\r\n\r\n/* #eee */\r\n\r\n/*\r\n * Typography\r\n * ========================================================================== */\r\n\r\n/*\r\n * Layout\r\n * ========================================================================== */\r\n\r\n/*\r\n * Media queries breakpoints\r\n * ========================================================================== */\r\n\r\n/* Extra small screen / phone */\r\n\r\n/* Small screen / tablet */\r\n\r\n/* Medium screen / desktop */\r\n\r\n/* Large screen / wide desktop */\r\n\r\n/*\r\n * Animations\r\n * ========================================================================== */\r\n\r\n.FileUploader_container_8Cj {\n  display: -webkit-box;\n  display: -webkit-flex;\n  display: -ms-flexbox;\n  display: flex;\n  -webkit-box-pack: center;\n  -webkit-justify-content: center;\n      -ms-flex-pack: center;\n          justify-content: center;\n  width: 100%;\n}\r\n\r\n.FileUploader_textbox_1Qu {\n  margin-top: 100px;\n  width: 500px;\n  height: 500px;\n  text-align: center;\n  display: -webkit-box;\n  display: -webkit-flex;\n  display: -ms-flexbox;\n  display: flex;\n  -webkit-box-orient: vertical;\n  -webkit-box-direction: normal;\n  -webkit-flex-direction: column;\n      -ms-flex-direction: column;\n          flex-direction: column;\n  -webkit-box-pack: center;\n  -webkit-justify-content: center;\n      -ms-flex-pack: center;\n          justify-content: center;\n  -webkit-align-content: center;\n      -ms-flex-line-pack: center;\n          align-content: center;\n  -webkit-box-align: center;\n  -webkit-align-items: center;\n      -ms-flex-align: center;\n          align-items: center;\n  border: 4px solid black;\n  font-weight: bold;\n  font-size: 20px;\n}\n", "", {"version":3,"sources":["/./src/components/variables.scss","/./src/components/FileUploader/FileUploader.scss"],"names":[],"mappings":"AAAA;;gFAEgF;;AAGxB,UAAU;;AACV,aAAa;;AACb,UAAU;;AACV,UAAU;;AACV,UAAU;;AAElE;;gFAEgF;;AAIhF;;gFAEgF;;AAIhF;;gFAEgF;;AAEhD,gCAAgC;;AAChC,2BAA2B;;AAC3B,6BAA6B;;AAC7B,iCAAiC;;AAEjE;;gFAEgF;;AChChF;EACE,qBAAc;EAAd,sBAAc;EAAd,qBAAc;EAAd,cAAc;EACd,yBAAwB;EAAxB,gCAAwB;MAAxB,sBAAwB;UAAxB,wBAAwB;EACxB,YAAY;CACb;;AAED;EACE,kBAAkB;EAClB,aAAa;EACb,cAAc;EACd,mBAAmB;EACnB,qBAAc;EAAd,sBAAc;EAAd,qBAAc;EAAd,cAAc;EACd,6BAAuB;EAAvB,8BAAuB;EAAvB,+BAAuB;MAAvB,2BAAuB;UAAvB,uBAAuB;EACvB,yBAAwB;EAAxB,gCAAwB;MAAxB,sBAAwB;UAAxB,wBAAwB;EACxB,8BAAsB;MAAtB,2BAAsB;UAAtB,sBAAsB;EACtB,0BAAoB;EAApB,4BAAoB;MAApB,uBAAoB;UAApB,oBAAoB;EACpB,wBAAwB;EACxB,kBAAkB;EAClB,gBAAgB;CACjB","file":"FileUploader.scss","sourcesContent":["/*\r\n * Colors\r\n * ========================================================================== */\r\n\r\n$white-base:            hsl(255, 255, 255);\r\n$gray-darker:           color(black lightness(+13.5%)); /* #222 */\r\n$gray-dark:             color(black lightness(+25%));   /* #404040 */\r\n$gray:                  color(black lightness(+33.5%)); /* #555 */\r\n$gray-light:            color(black lightness(+46.7%)); /* #777 */\r\n$gray-lighter:          color(black lightness(+93.5%)); /* #eee */\r\n\r\n/*\r\n * Typography\r\n * ========================================================================== */\r\n\r\n$font-family-base:      'Segoe UI', 'HelveticaNeue-Light', sans-serif;\r\n\r\n/*\r\n * Layout\r\n * ========================================================================== */\r\n\r\n$max-content-width:     1000px;\r\n\r\n/*\r\n * Media queries breakpoints\r\n * ========================================================================== */\r\n\r\n$screen-xs-min:         480px;  /* Extra small screen / phone */\r\n$screen-sm-min:         768px;  /* Small screen / tablet */\r\n$screen-md-min:         992px;  /* Medium screen / desktop */\r\n$screen-lg-min:         1200px; /* Large screen / wide desktop */\r\n\r\n/*\r\n * Animations\r\n * ========================================================================== */\r\n\r\n$animation-swift-out:   .45s cubic-bezier(0.3, 1, 0.4, 1) 0s;\r\n","@import '../variables.scss';\n\n.container {\n  display: flex;\n  justify-content: center;\n  width: 100%;\n}\n\n.textbox {\n  margin-top: 100px;\n  width: 500px;\n  height: 500px;\n  text-align: center;\n  display: flex;\n  flex-direction: column;\n  justify-content: center;\n  align-content: center;\n  align-items: center;\n  border: 4px solid black;\n  font-weight: bold;\n  font-size: 20px;\n}\n"],"sourceRoot":"webpack://"}]);
   
   // exports
   exports.locals = {

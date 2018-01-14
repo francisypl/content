@@ -14,6 +14,8 @@ class FileUploader extends Component {
     super(props);
     this.state = {
       text: TEXT_STATES.default,
+      results: { key: '', url: '' },
+      download: '',
     };
     this.dropHandler = this.dropHandler.bind(this);
   }
@@ -34,6 +36,10 @@ class FileUploader extends Component {
     return file;
   }
 
+  uploadtoS3() {
+    return 'https://www.google.com';
+  }
+
   async dropHandler(ev) {
     ev.preventDefault();
     const { text } = this.state;
@@ -42,8 +48,11 @@ class FileUploader extends Component {
     }
     const file = this.extractFile(ev);
     const { key, encryptedFile } = await encryptFile(file);
-    console.log('key =>', key);
-    console.log('encryptedFile =>', encryptedFile);
+    const url = this.uploadtoS3(encryptedFile);
+    this.setState({
+      results: { key, url },
+      download: `data:application/octet-stream,${encryptedFile}`,
+    });
   }
 
   dragLeave = (e) => {
@@ -60,7 +69,8 @@ class FileUploader extends Component {
   };
 
   render() {
-    const { text } = this.state;
+    const { text, results, download } = this.state;
+    const hasResults = results !== '' && download !== '';
     return (
       <div className={ s.container }>
         <div
@@ -69,7 +79,12 @@ class FileUploader extends Component {
           onDragLeave={ this.dragLeave }
           onDrop={ this.dropHandler }
         >
-          <span>{ text }</span>
+          <span>{ !hasResults && text }</span>
+          <span>{ results && results.key && `Private: ${results.key}` }</span>
+          <span>{ results && results.url && `Url: ${results.url}` }</span>
+          { hasResults &&
+            <a className={ s.downloadLink } href={ download }>
+              Download Encrypted File</a> }
         </div>
       </div>
     );
