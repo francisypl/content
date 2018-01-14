@@ -20,7 +20,7 @@ export default async function encryptFile(file) {
   return new Promise((resolve) => {
     fr.onload = () => {
       const key = getNewSecretKey();
-      const encryptedFile = AES.encrypt(fr.result, key).toString();
+      const encryptedFile = AES.encrypt(fr.result, key);
       // const decryptedFile = AES.decrypt(encryptedFile, key).toString(enc.Utf8);
       resolve({ key, encryptedFile });
     };

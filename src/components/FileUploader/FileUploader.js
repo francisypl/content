@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, PropTypes } from 'react';
 import withStyles from 'isomorphic-style-loader/lib/withStyles';
 import s from './FileUploader.scss';
 import encryptFile from '../../utils/encryptfile';
@@ -9,8 +9,10 @@ const TEXT_STATES = {
   ondrag: 'Drop the file to begin',
   ondrop: 'Processing your file....'
 };
+const Dropzone = require('react-dropzone');
+const upload = require('superagent')
 
-class FileUploader extends Component {
+class FileUploader extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -38,8 +40,20 @@ class FileUploader extends Component {
     return file;
   }
 
-  uploadtoS3() {
-    return 'https://www.google.com';
+
+  uploadtoS3(file) {
+    const { ciphertext: { words } } = file;
+
+    var myFile = new File(words, "upload.txt");
+    return upload.post('http://localhost:3010/upload')
+    .attach('file', myFile)
+    .accept('json')
+    .then((res) => {
+      return res.body.url;
+    })
+    .catch(function(err){
+      console.log("error caught: " + err);
+    });
   }
 
   async dropHandler(ev) {
@@ -49,10 +63,10 @@ class FileUploader extends Component {
       this.setState({ text: TEXT_STATES.ondrop });
     }
     const file = this.extractFile(ev);
+    
     const { key, encryptedFile } = await encryptFile(file);
     const contractAddr = await deployContract(key, 1);
-    // const contractAddr = '';
-    const url = this.uploadtoS3(encryptedFile);
+    const url = await this.uploadtoS3(encryptedFile);
     this.setState({
       results: { key, url, contractAddr },
       download: `data:application/octet-stream,${encryptedFile}`,
@@ -71,6 +85,8 @@ class FileUploader extends Component {
       this.setState({ text: TEXT_STATES.ondrag });
     }
   };
+
+  
 
   render() {
     const { text, results, download } = this.state;

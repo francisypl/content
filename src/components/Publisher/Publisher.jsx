@@ -19,6 +19,9 @@ MyContract.defaults({
 class Publisher extends Component {
   constructor(props) {
     super(props);
+    this.state = {
+      key: ''
+    }
     this.deployContract = this.deployContract.bind(this);
   }
 

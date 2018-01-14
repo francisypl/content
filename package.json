@@ -5,6 +5,7 @@
     "npm": ">=3.3 <4"
   },
   "dependencies": {
+    "aws-sdk": "^2.181.0",
     "babel-polyfill": "6.6.1",
     "babel-runtime": "6.6.1",
     "bluebird": "^3.3.3",
@@ -26,6 +27,7 @@
     "jade": "1.11.0",
     "jsonwebtoken": "5.7.0",
     "markdown-it": "6.0.0",
+    "multer": "^1.3.0",
     "node-fetch": "1.3.3",
     "normalize.css": "3.0.3",
     "passport": "0.3.2",
@@ -34,8 +36,10 @@
     "pretty-error": "2.0.0",
     "react": "0.14.7",
     "react-dom": "0.14.7",
+    "react-dropzone": "^4.2.5",
     "react-routing": "0.0.7",
     "source-map-support": "0.4.0",
+    "superagent": "^3.8.2",
     "truffle-contract": "^3.0.1",
     "web3": "^0.20.1",
     "whatwg-fetch": "0.11.0"
