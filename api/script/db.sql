@@ -7,7 +7,7 @@
 #
 # Host: 127.0.0.1 (MySQL 5.7.17)
 # Database: content
-# Generation Time: 2018-01-14 00:54:03 +0000
+# Generation Time: 2018-01-14 02:55:02 +0000
 # ************************************************************
 
 
@@ -27,9 +27,11 @@ DROP TABLE IF EXISTS `Content`;
 
 CREATE TABLE `Content` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-  `content_address` varchar(250) NOT NULL DEFAULT '',
-  `url` varchar(250) NOT NULL DEFAULT '',
+  `content_address` varchar(255) NOT NULL DEFAULT '',
+  `url` varchar(255) NOT NULL DEFAULT '',
   `price` int(10) unsigned NOT NULL,
+  `createdAt` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `updatedAt` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
