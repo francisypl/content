@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, PropTypes } from 'react';
 import withStyles from 'isomorphic-style-loader/lib/withStyles';
 import s from './FileUploader.scss';
 import encryptFile from '../../utils/encryptfile';
@@ -7,10 +7,14 @@ import { deployContract } from '../../utils/contract';
 const TEXT_STATES = {
   default: 'Drag a file here to begin',
   ondrag: 'Drop the file to begin',
-  ondrop: 'Processing your file....'
+  ondrop: 'Processing your file....',
 };
 
 class FileUploader extends Component {
+  static contextTypes = {
+    contract: PropTypes.object.isRequired,
+  };
+
   constructor(props) {
     super(props);
     this.state = {
@@ -50,7 +54,7 @@ class FileUploader extends Component {
     }
     const file = this.extractFile(ev);
     const { key, encryptedFile } = await encryptFile(file);
-    const contractAddr = await deployContract(key, 1);
+    const contractAddr = await deployContract(this.context.contract, key, 1);
     // const contractAddr = '';
     const url = this.uploadtoS3(encryptedFile);
     this.setState({

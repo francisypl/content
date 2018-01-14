@@ -3,22 +3,30 @@ import contract from 'truffle-contract';
 
 import PublisherContract from '../truffle/build/contracts/Publisher.json';
 
-const provider = new Web3.providers.HttpProvider('http://localhost:8545');
-
-const MyContract = contract(PublisherContract);
-MyContract.setProvider(provider);
-
-// set default data for the contract
-MyContract.defaults({
-  from: '0x3ca9efe38a216cab7852110311d1829609474dd4',
-  gas: 4712388,
-  gasPrice: 1000000000,
-});
-
-async function deployContract(key, price) {
+async function deployContract(MyContract, key, price) {
   const contractInstance = await MyContract.new();
   await contractInstance.setData(key, price);
   return contractInstance.address;
 }
 
-export { deployContract };
+function initWeb3() {
+  const provider =
+    typeof window !== 'undefined'
+      ? window.web3.currentProvider
+      : new Web3.providers.HttpProvider('http://localhost:8545');
+  const web3 = new Web3(provider);
+  const MyContract = contract(PublisherContract);
+  MyContract.setProvider(web3.currentProvider);
+
+  const account = web3.eth.accounts;
+  console.log('account =>', account[0]);
+  MyContract.defaults({
+    from: account[0],
+    gas: 4712388,
+    gasPrice: 1000000000,
+  });
+
+  return { ...MyContract };
+}
+
+export { deployContract, initWeb3 };

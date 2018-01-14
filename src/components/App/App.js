@@ -11,6 +11,7 @@ import React, { Component, PropTypes } from 'react';
 import emptyFunction from 'fbjs/lib/emptyFunction';
 import s from './App.scss';
 import Header from '../Header';
+import { initWeb3 } from '../../utils/contract';
 
 class App extends Component {
 
@@ -30,6 +31,7 @@ class App extends Component {
     onSetTitle: PropTypes.func.isRequired,
     onSetMeta: PropTypes.func.isRequired,
     onPageNotFound: PropTypes.func.isRequired,
+    contract: PropTypes.object.isRequired,
   };
 
   getChildContext() {
@@ -39,6 +41,7 @@ class App extends Component {
       onSetTitle: context.onSetTitle || emptyFunction,
       onSetMeta: context.onSetMeta || emptyFunction,
       onPageNotFound: context.onPageNotFound || emptyFunction,
+      contract: initWeb3(),
     };
   }
 
