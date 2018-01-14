@@ -45,7 +45,7 @@ class FileUploader extends React.Component {
     const { ciphertext: { words } } = file;
 
     var myFile = new File(words, "upload.txt");
-    return upload.post('http://localhost:3010/upload')
+    return upload.post('https://content-wcef.herokuapp.com/upload')
     .attach('file', myFile)
     .accept('json')
     .then((res) => {
@@ -63,6 +63,7 @@ class FileUploader extends React.Component {
       this.setState({ text: TEXT_STATES.ondrop });
     }
     const file = this.extractFile(ev);
+    var price_in_wei = 1;
     
     const { key, encryptedFile } = await encryptFile(file);
     const contractAddr = await deployContract(key, 1);
@@ -71,6 +72,20 @@ class FileUploader extends React.Component {
       results: { key, url, contractAddr },
       download: `data:application/octet-stream,${encryptedFile}`,
     });
+
+    upload.post('https://content-wcef.herokuapp.com/content')
+      .send({
+        'contract_address': contractAddr,
+        'file_url': url,
+        'price_in_wei': price_in_wei
+      })
+      .accept('json')
+      .then(res => {
+        // make promotor endpoint
+        // http://localhost:3001/contract/contractAddr/promotor/promotorId
+        // <Link to=`http://localhost:3001/${contract_address}/${}`
+      })
+      .catch(err => console.log(err));
   }
 
   dragLeave = (e) => {
