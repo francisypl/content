@@ -2,8 +2,9 @@
 <br>
 
 > "content" is a new data ownership model that is decentralized, and gives publishers control of their data,
-> promoters their cut of promoting content, and consumers to only pay for whatever they want to consume,
-> at a fair price.
+> promoters their cut of promoting content, and consumers the freedom to pay for whatever they want to consume,
+> all at a fair price controlled by the blockchain.
+> Read more [here.](https://medium.com/@francispakyuen/the-future-of-data-ownership-3778fa8e086)
 
 ### Publishers
 
