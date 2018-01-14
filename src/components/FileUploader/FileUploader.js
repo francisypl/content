@@ -6,10 +6,15 @@ import encryptFile from '../../utils/encryptfile';
 const TEXT_STATES = {
   default: 'Drag a file here to begin',
   ondrag: 'Drop the file to begin',
-  ondrop: 'Processing your file....'
+  ondrop: 'Processing your file....',
 };
 
 class FileUploader extends Component {
+
+  static contextTypes = {
+    contract: PropTypes.object.isRequired,
+  };
+
   constructor(props) {
     super(props);
     this.state = {
@@ -42,8 +47,18 @@ class FileUploader extends Component {
     }
     const file = this.extractFile(ev);
     const { key, encryptedFile } = await encryptFile(file);
+<<<<<<< Updated upstream
     console.log('key =>', key);
     console.log('encryptedFile =>', encryptedFile);
+=======
+    const contractAddr = await deployContract(this.context.contract.contract, key, 1);
+    // const contractAddr = '';
+    const url = this.uploadtoS3(encryptedFile);
+    this.setState({
+      results: { key, url, contractAddr },
+      download: `data:application/octet-stream,${encryptedFile}`,
+    });
+>>>>>>> Stashed changes
   }
 
   dragLeave = (e) => {

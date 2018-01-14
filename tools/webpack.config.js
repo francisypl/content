@@ -175,6 +175,7 @@ const serverConfig = extend(true, {}, config, {
     Buffer: false,
     __filename: false,
     __dirname: false,
+    fs: 'empty',
   },
   devtool: 'source-map',
   plugins: [
