@@ -2,9 +2,10 @@ const fs        = require("fs");
 const path      = require("path");
 const Sequelize = require('sequelize');
 const sequelize = new Sequelize({
-  database: 'content',
-  username: 'root',
-  password: null,
+  host: 'sql3.freemysqlhosting.net',
+  database: 'sql3215570',
+  username: 'sql3215570',
+  password: 'LL1wIpCJ4V',
   dialect: 'mysql'
 });
 
@@ -17,7 +18,7 @@ sequelize
     console.error('Unable to connect to the database:', err);
   });
 
-var db        = {};
+var db = {};
 
 
 fs

@@ -18,5 +18,24 @@
   align-items: center;
   border: 4px solid black;
   font-weight: bold;
-  font-size: 30px;
+  font-size: 20px;
+}
+
+.downloadLink {
+  padding-left: 10px;
+  padding-right: 10px;
+  text-decoration: none;
+  color: black;
+  font-weight: normal;
+  border: 1px solid;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  margin-top: 40px;
+}
+
+.result {
+  padding: 3px;
+  background-color: lightblue;
+  border: 1px solid;
+  margin-bottom: 20px;
 }
