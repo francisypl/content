@@ -30,13 +30,24 @@ router.post('/', function(req, res, next) {
 /* GET content */
 router.get('/:content_id', function(req, res, next) {
   const content_id = req.params.content_id;
-
   console.log('content_id: ' + content_id);
-  res.send({
-    'content_address': '1234',
-    'price_in_wei': 10,
-    'file_url': "http://i0.kym-cdn.com/entries/icons/mobile/000/025/067/ugandanknuck.jpg"
-  });
+
+  db.Content.findById(content_id)
+    .then(content => {
+      console.log('Got content successfully. content: ' + JSON.stringify(content));
+      res.send({
+          'content_address': content.content_address,
+          'price_in_wei': content.price,
+          'file_url': content.url
+        });
+    })
+    .catch(error => {
+      console.error('Error getting entry. Error=' + error);
+      res.status(500).send({
+        'error': error
+      })
+    });
+
 });
 
 module.exports = router;
